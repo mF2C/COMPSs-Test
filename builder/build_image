@@ -1,0 +1,26 @@
+#!/bin/bash -e
+
+
+SANDBOX="/tmp/mf2c/container"
+rm -rf ${SANDBOX}
+mkdir -p ${SANDBOX}
+
+INIT_DIR=`pwd`
+APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cp ${APP_DIR}/Dockerfile ${SANDBOX}/Dockerfile
+
+cd "${APP_DIR}/../application"
+
+APP_DIR=`pwd`
+
+mvn -DskipTests clean install
+
+mkdir -p ${SANDBOX}/arrel/root
+cp ${APP_DIR}/target/Test-1.0-SNAPSHOT.jar ${SANDBOX}/arrel/root/app.jar
+
+mvn clean
+
+cd ${SANDBOX}
+docker build -t compss-test:latest .
+
+cd ${INIT_DIR}

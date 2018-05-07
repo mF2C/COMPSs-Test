@@ -5,14 +5,21 @@ Test application for the COMPSs runtime. The application receives as a parameter
 
 Have Docker available.
 
-## Execution
-### **Execution step 1: Deploying the testbed**
+
+## Image Building (optional)
+Although the application image is publicly available from the public Docker image registry and can be pulled from there, this repository contains the script and Dockerfile used for generating it as an example. Users can create such image locally by executing the _build\_image_ script located within the builder folder. However, it will still require Internet connection to pull the mf2c/compss-agent from the Docker registry if it is not cached yet.
+
+  _git clone https://github.com/mF2C/COMPSs-Test.git_
+  _cd ./COMPSs-Test/builder/build\_image_
+
+## COMPSs-Test Execution
+### **Execution step 1: Deploying the infrastructure**
 
   Instantiate a Docker container that plays the role of worker
-  _docker run --rm -it --env MF2C_HOST=172.17.0.2  --env DEBUG=debug --name worker mf2c/compss-agent:latest_
+  _docker run --rm -it --env MF2C_HOST=172.17.0.2  --env DEBUG=debug --name worker mf2c/compss-test:latest_
 
   Instantiate a Docker container that plays the role of master. The container is listening on port 46100, it is important to redirect the port of the container host.
-  _docker run --rm -it --env MF2C_HOST=172.17.0.3 -p46100:46100 --env DEBUG=debug --name master mf2c/compss-agent:latest_
+  _docker run --rm -it --env MF2C_HOST=172.17.0.3 -p46100:46100 --env DEBUG=debug --name master mf2c/compss-test:latest_
 
   WARNING: make sure that both, master and worker, IP addresses match the IP address passed as MF2C_HOST
 
