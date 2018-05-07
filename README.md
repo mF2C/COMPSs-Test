@@ -10,6 +10,7 @@ Have Docker available.
 Although the application image is publicly available from the public Docker image registry and can be pulled from there, this repository contains the script and Dockerfile used for generating it as an example. Users can create such image locally by executing the _build\_image_ script located within the builder folder. However, it will still require Internet connection to pull the mf2c/compss-agent from the Docker registry if it is not cached yet.
 
   _git clone https://github.com/mF2C/COMPSs-Test.git_
+  
   _cd ./COMPSs-Test/builder/build\_image_
 
 ## COMPSs-Test Execution
