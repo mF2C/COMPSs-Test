@@ -11,7 +11,7 @@ Although the application image is publicly available from the public Docker imag
 
   _git clone https://github.com/mF2C/COMPSs-Test.git_
   
-  _cd ./COMPSs-Test/builder/build\_image_
+  _./COMPSs-Test/builder/build\_image_
 
 ## COMPSs-Test Execution
 ### **Execution step 1: Deploying the infrastructure**
