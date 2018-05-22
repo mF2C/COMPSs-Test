@@ -1,3 +1,3 @@
-FROM mf2c/compss-agent:1.1
+FROM mf2c/compss-agent:latest
 
 COPY ["arrel", "/"]
