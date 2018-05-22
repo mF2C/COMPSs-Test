@@ -15,7 +15,7 @@ APP_DIR=`pwd`
 
 mvn -DskipTests clean install
 
-mkdir -p ${SANDBOX}/arrel/root
+mkdir -p ${SANDBOX}/arrel/app
 cp ${APP_DIR}/target/Test-1.0-SNAPSHOT.jar ${SANDBOX}/arrel/app/app.jar
 
 mvn clean
