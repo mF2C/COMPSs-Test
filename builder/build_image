@@ -21,6 +21,6 @@ cp ${APP_DIR}/target/Test-1.0-SNAPSHOT.jar ${SANDBOX}/arrel/app/app.jar
 mvn clean
 
 cd ${SANDBOX}
-docker build -t compss-test:latest .
+docker build -t mf2c/compss-test:latest .
 
 cd ${INIT_DIR}
