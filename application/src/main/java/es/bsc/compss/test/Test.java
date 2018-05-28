@@ -16,23 +16,74 @@
  */
 package es.bsc.compss.test;
 
+import datamodel.Data;
+
 
 public class Test {
 
-    public static void main(String[] args) {
-        int iters = Integer.parseInt(args[0]);
-        System.out.println("Received a service invocation creating " + iters + " tasks.");
-        for (int i = 0; i < iters; i++) {
-            test(i + 1);
+    public static void registerValue(String alias, int value) {
+        System.out.println("Registering Data " + value + " with alias " + alias);
+        try {
+            Data d = new Data(value);
+            d.makePersistent(alias);
+            System.out.println("registered data with ID: " + d.getID());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
-    public static void test(int timeStep) {
+    public static void main(int iters, Data value) {
+        System.out.println("Received a service invocation creating " + iters + " tasks with initial value " + value.getValue());
+
+        for (int i = 0; i < iters; i++) {
+            increment(i + 1, value);
+        }
+
+        System.out.println("Final value of the variable: " + value.getValue());
+
+    }
+
+    public static void wholeTest(int iters, int value) {
+        Data d = genValue(value, "data" + System.currentTimeMillis());
+
+        for (int i = 0; i < iters; i++) {
+            for (int j = 0; j < 4; j++) {
+                printValue(d);
+            }
+            increment(i + 1, d);
+        }
+
+        printValue(d);
+
+    }
+
+    public static Data genValue(int value, String alias) {
+        Data d = new Data(value);
+        d.makePersistent(alias);
+        return d;
+    }
+
+    public static void persist(int value, String alias, Data result) {
+        Data d = new Data(value);
+        d.makePersistent(alias);
+    }
+
+    public static void printValue(Data value) {
         try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+        }
+        System.out.println("Printing Data value:" + value.getValue());
+    }
+
+    public static void increment(int timeStep, Data value) {
+        try {
+            value.setValue(value.getValue() + 1);
             Thread.sleep(1000 * timeStep);
         } catch (Exception e) {
         }
-        System.out.println("Executing task " + timeStep + " which lasts " + (1000 * timeStep) + " ms.");
+        System.out.println("Executed task " + timeStep + " which lasts " + (1000 * timeStep) + " ms.");
     }
 
 }

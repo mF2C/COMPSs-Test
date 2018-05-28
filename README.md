@@ -3,8 +3,12 @@ Test application for the COMPSs runtime. The application receives as a parameter
 
 ## Requirements
 
-Have Docker available.
+Have Docker and docker-compose installed in the system and a DataClay cluster up and running.
 
+To deploy a DataClay testbed, clone the git repository and run the docker composition used for running DataClay demos.
+  _git clone https://github.com/mF2C/DataClay.git_ 
+  _cd DataClay/orchestration_ 
+  _docker-compose down && docker-compose up && docker-compose down_ 
 
 ## Image Building (optional)
 Although the application image is publicly available from the public Docker image registry and can be pulled from there, this repository contains the script and Dockerfile used for generating it as an example. Users can create such image locally by executing the _build\_image_ script located within the builder folder. However, it will still require Internet connection to pull the mf2c/compss-agent from the Docker registry if it is not cached yet.
@@ -15,12 +19,11 @@ Although the application image is publicly available from the public Docker imag
 
 ## COMPSs-Test Execution
 ### **Execution step 1: Deploying the infrastructure**
-
   Instantiate a Docker container that plays the role of worker
-  _docker run --rm -it --env MF2C_HOST=172.17.0.2  --env DEBUG=debug --name worker mf2c/compss-test:latest_
+  _docker run --rm -it --network 'host' --env MF2C_HOST=127.0.0.2 --env PORT=46101 --name worker -w /tmp mf2c/compss-dataclay-test:latest_
 
-  Instantiate a Docker container that plays the role of master. The container is listening on port 46100, it is important to redirect the port of the container host.
-  _docker run --rm -it --env MF2C_HOST=172.17.0.3 -p46100:46100 --env DEBUG=debug --name master mf2c/compss-test:latest_
+  Instantiate a Docker container that plays the role of master. 
+  _docker run --rm -it --network 'host' --env MF2C_HOST=127.0.0.1 --env PORT=46100 --name master -w /tmp mf2c/compss-dataclay-test:latest_
 
   WARNING: make sure that both, master and worker, IP addresses match the IP address passed as MF2C_HOST
 
@@ -33,24 +36,28 @@ To execute COMPSs you have to send a HTTP PUT request to the _StartApplication_ 
 curl -X PUT -H "Content-Type: application/xml" -d '<startApplication>
     <ceiClass>es.bsc.compss.test.TestItf</ceiClass>
     <className>es.bsc.compss.test.Test</className>
-    <methodName>main</methodName>
+    <hasResult>false</hasResult>
+    <methodName>wholeTest</methodName>
     <parameters>
         <params paramId="0">
             <direction>IN</direction>
-            <type>OBJECT_T</type>
-            <array paramId="0">
-                <componentClassname>java.lang.String</componentClassname>
-                <values>
-                    <element paramId="0">
-                        <className>java.lang.String</className>
-                        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">3</value>
-                    </element>
-                </values>
-            </array>
+            <type>INT_T</type>
+            <element paramId="0">
+                <className>java.lang.Integer</className>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">3</value>
+            </element>
+        </params>
+        <params paramId="1">
+            <direction>IN</direction>
+            <type>INT_T</type>
+            <element paramId="0">
+                <className>java.lang.Integer</className>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">5</value>
+            </element>
         </params>
     </parameters>
     <resources>
-        <resource name="172.17.0.3:46100">
+        <resource name="127.0.0.1:46100">
             <description>
                 <memorySize>4.0</memorySize>
                 <memoryType>[unassigned]</memoryType>
@@ -61,7 +68,7 @@ curl -X PUT -H "Content-Type: application/xml" -d '<startApplication>
                 <priceTimeUnit>-1</priceTimeUnit>
                 <processors>
                     <architecture>[unassigned]</architecture>
-                    <computingUnits>1</computingUnits>
+                    <computingUnits>2</computingUnits>
                     <internalMemory>-1.0</internalMemory>
                     <name>[unassigned]</name>
                     <propName>[unassigned]</propName>
@@ -75,7 +82,7 @@ curl -X PUT -H "Content-Type: application/xml" -d '<startApplication>
                 <wallClockLimit>-1</wallClockLimit>
             </description>
         </resource>
-        <resource name="172.17.0.2:46100">
+        <resource name="127.0.0.2:46101">
             <description>
                 <memorySize>4.0</memorySize>
                 <memoryType>[unassigned]</memoryType>
@@ -101,7 +108,7 @@ curl -X PUT -H "Content-Type: application/xml" -d '<startApplication>
             </description>
         </resource>
     </resources>
-    <serviceInstanceId>e47b5928-98c5-417e-9dd5-1593fc6dca5b</serviceInstanceId>
+    <serviceInstanceId>c75a34da-3a1f-4d32-95de-6cc272e50a7f</serviceInstanceId>
 </startApplication>' http://localhost:46100/COMPSs/startApplication
 ```
 

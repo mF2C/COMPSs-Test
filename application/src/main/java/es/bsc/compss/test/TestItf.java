@@ -16,6 +16,7 @@
  */
 package es.bsc.compss.test;
 
+import datamodel.Data;
 import es.bsc.compss.types.annotations.Constraints;
 import es.bsc.compss.types.annotations.Parameter;
 import es.bsc.compss.types.annotations.parameter.Direction;
@@ -27,7 +28,22 @@ public interface TestItf {
 
     @Constraints(computingUnits = "1")
     @Method(declaringClass = "es.bsc.compss.test.Test")
-    void test(
-            @Parameter(type = Type.INT, direction = Direction.IN) int timeStep
+    void printValue(
+            @Parameter(type = Type.OBJECT, direction = Direction.IN) Data value
     );
+
+    @Constraints(computingUnits = "1")
+    @Method(declaringClass = "es.bsc.compss.test.Test")
+    void increment(
+            @Parameter(type = Type.INT, direction = Direction.IN) int timeStep,
+            @Parameter(type = Type.OBJECT, direction = Direction.INOUT) Data value
+    );
+
+    @Constraints(computingUnits = "1")
+    @Method(declaringClass = "es.bsc.compss.test.Test")
+    Data genValue(
+            @Parameter(type = Type.INT, direction = Direction.IN) int value,
+            @Parameter(type = Type.STRING, direction = Direction.IN) String alias
+    );
+
 }
