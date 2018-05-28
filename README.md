@@ -6,8 +6,11 @@ Test application for the COMPSs runtime. The application receives as a parameter
 Have Docker and docker-compose installed in the system and a DataClay cluster up and running.
 
 To deploy a DataClay testbed, clone the git repository and run the docker composition used for running DataClay demos.
+
   _git clone https://github.com/mF2C/DataClay.git_ 
+  
   _cd DataClay/orchestration_ 
+  
   _docker-compose down && docker-compose up && docker-compose down_ 
 
 ## Image Building (optional)
@@ -20,9 +23,11 @@ Although the application image is publicly available from the public Docker imag
 ## COMPSs-Test Execution
 ### **Execution step 1: Deploying the infrastructure**
   Instantiate a Docker container that plays the role of worker
+  
   _docker run --rm -it --network 'host' --env MF2C_HOST=127.0.0.2 --env PORT=46101 --name worker -w /tmp mf2c/compss-dataclay-test:latest_
 
   Instantiate a Docker container that plays the role of master. 
+  
   _docker run --rm -it --network 'host' --env MF2C_HOST=127.0.0.1 --env PORT=46100 --name master -w /tmp mf2c/compss-dataclay-test:latest_
 
   WARNING: make sure that both, master and worker, IP addresses match the IP address passed as MF2C_HOST
