@@ -17,7 +17,6 @@ mvn -DskipTests clean install
 
 mkdir -p ${SANDBOX}/arrel/app
 cp ${APP_DIR}/target/DataClayTest-1.0-SNAPSHOT.jar ${SANDBOX}/arrel/app/app.jar
-cp -r ${APP_DIR}/../builder/dataclay.jar ${SANDBOX}/arrel/app/dataclay.jar
 mvn clean
 
 cd ${SANDBOX}
