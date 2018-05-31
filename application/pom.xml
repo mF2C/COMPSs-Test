@@ -33,17 +33,7 @@
         <dependency>
             <groupId>es.bsc.compss</groupId>
             <artifactId>compss-api</artifactId>
-            <version>2.2.rc1803</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>2.7</version>
-        </dependency>
-        <dependency>
-            <groupId>es.bsc.compss</groupId>
-            <artifactId>compss-adaptors-mf2c-master</artifactId>
-            <version>2.2.rc1803</version>
+            <version>mf2c-it1</version>
         </dependency>
     </dependencies>
 
